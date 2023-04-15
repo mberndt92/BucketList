@@ -62,7 +62,6 @@ struct ContentView: View {
                 }
             }
         } else {
-            // button here
             Button("Unlock Places") {
                 viewModel.authenticate()
             }

@@ -51,7 +51,7 @@ extension ContentView {
                 latitude: mapRegion.center.latitude,
                 longitude: mapRegion.center.longitude
             )
-            
+
             locations.append(newLocation)
             save()
         }
@@ -71,12 +71,10 @@ extension ContentView {
             if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
                 let reasonString = "Please authenticate yourself to unlock your places."
                 context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString) { success, authenticationError in
-                    if success {
-                        Task { @MainActor in
+                    Task { @MainActor in
+                        if success {
                             self.isUnlocked = true
-                        }
-                    } else {
-                        Task { @MainActor in
+                        } else {
                             self.errorTitle = "Failed to authenticate"
                             self.errorMessage = "Couldn't recognise the user of this app"
                             self.showingError = true
