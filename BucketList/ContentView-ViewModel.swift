@@ -19,6 +19,10 @@ extension ContentView {
         @Published var selectedPlace: Location?
         @Published var isUnlocked = false
         
+        @Published var showingError = false
+        @Published var errorTitle = ""
+        @Published var errorMessage = ""
+        
         let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedPlaces")
         
         init() {
@@ -72,11 +76,19 @@ extension ContentView {
                             self.isUnlocked = true
                         }
                     } else {
-                        // error
+                        Task { @MainActor in
+                            self.errorTitle = "Failed to authenticate"
+                            self.errorMessage = "Couldn't recognise the user of this app"
+                            self.showingError = true
+                        }
                     }
                 }
             } else {
-                // no biometrics
+                Task { @MainActor in
+                    self.errorTitle = "Failed to authenticate"
+                    self.errorMessage = "No biometrics were found to authenticate with this app"
+                    self.showingError = true
+                }
             }
             
         }
